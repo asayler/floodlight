@@ -52,6 +52,9 @@ public class AdvNetRouter implements IFloodlightModule, IOFMessageListener {
 
 	protected static final MACAddress MAGIC = MACAddress.valueOf("00:11:00:11:00:11");
         // EDIT HERE
+	protected static final MACAddress H1 = MACAddress.valueOf("00:00:00:00:00:01");
+	protected static final MACAddress H2 = MACAddress.valueOf("00:00:00:00:00:02");
+	protected static final MACAddress H3 = MACAddress.valueOf("00:00:00:00:00:03");
 
 	protected Map<MACAddress, SwitchPort> _mac_to_switchport;
 
@@ -225,9 +228,12 @@ public class AdvNetRouter implements IFloodlightModule, IOFMessageListener {
 	private RouteMode
 	getCommMode(MACAddress src, MACAddress dst)
 	{
+	    // EDIT HERE
 
-           // EDIT HERE
+	    RouteMode rm = RouteMode.ROUTE_DIRECT;
 
+	    return rm;
+           
 	}
 
 	private void
