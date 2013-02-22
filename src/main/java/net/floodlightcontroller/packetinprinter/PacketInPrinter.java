@@ -1,4 +1,4 @@
-package net.floodlightcontroller.mactracker;
+package net.floodlightcontroller.packetinprinter;
 
 import java.util.Collection;
 import java.util.Map;
@@ -23,15 +23,14 @@ import net.floodlightcontroller.core.module.IFloodlightService;
 import net.floodlightcontroller.core.IFloodlightProviderService;
 import net.floodlightcontroller.packet.Ethernet;
 
-public class MACTracker implements IOFMessageListener, IFloodlightModule {
+public class PacketInPrinter implements IOFMessageListener, IFloodlightModule {
 
     protected IFloodlightProviderService floodlightProvider;
-    protected Set macAddresses;
     protected static Logger logger;
 
     @Override
 	public String getName() {
-	return MACTracker.class.getSimpleName();
+	return PacketInPrinter.class.getSimpleName();
     }
 
     @Override
@@ -69,8 +68,7 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
     @Override
 	public void init(FloodlightModuleContext context) throws FloodlightModuleException {
 	floodlightProvider = context.getServiceImpl(IFloodlightProviderService.class);
-	macAddresses = new ConcurrentSkipListSet<Long>();
-	logger = LoggerFactory.getLogger(MACTracker.class);
+	logger = LoggerFactory.getLogger(PacketInPrinter.class);
     }
 
     @Override
@@ -83,14 +81,8 @@ public class MACTracker implements IOFMessageListener, IFloodlightModule {
 	Ethernet eth =
 	    IFloodlightProviderService.bcStore.get(cntx,
 						   IFloodlightProviderService.CONTEXT_PI_PAYLOAD);
-	
-	Long sourceMACHash = Ethernet.toLong(eth.getSourceMACAddress());
-	if (!macAddresses.contains(sourceMACHash)) {
-	    macAddresses.add(sourceMACHash);
-	    logger.info("MAC Address: {} seen on switch: {}",
-			HexString.toHexString(sourceMACHash),
-			sw.getId());
-	}
+	logger.info("PacketIn Event on switch {}: \n{}\n",
+		    sw.getId(), eth.toString());
 	return Command.CONTINUE;
     }
     
