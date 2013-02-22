@@ -51,16 +51,16 @@ import org.slf4j.LoggerFactory;
 public class AdvNetRouter implements IFloodlightModule, IOFMessageListener {
 
     protected static final MACAddress MAGIC = MACAddress.valueOf("00:11:00:11:00:11");
-    // EDIT HERE
 
-    protected static final MACAddress PX = MACAddress.valueOf("00:00:00:00:00:01");
+    // EDIT HERE
+    protected static final MACAddress H1 = MACAddress.valueOf("00:00:00:00:00:01");
     protected static final MACAddress H2 = MACAddress.valueOf("00:00:00:00:00:02");
     protected static final MACAddress H3 = MACAddress.valueOf("00:00:00:00:00:03");
-    protected static final MACAddress H4 = MACAddress.valueOf("00:00:00:00:00:04");
+    protected static final MACAddress PX = MACAddress.valueOf("00:00:00:00:00:04");
 
     protected Map<MACAddress, SwitchPort> _mac_to_switchport;
 
-    protected enum RouteMode {
+    protected enum RouteMode{
 	ROUTE_DIRECT,
 	    ROUTE_PROXY,
 	    ROUTE_DROP,
