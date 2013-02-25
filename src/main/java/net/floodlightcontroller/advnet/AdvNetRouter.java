@@ -53,6 +53,9 @@ public class AdvNetRouter implements IFloodlightModule, IOFMessageListener {
     protected static final MACAddress MAGIC = MACAddress.valueOf("00:11:00:11:00:11");
 
     // EDIT HERE
+    protected static final MACAddress H1 = MACAddress.valueOf("00:00:00:00:00:01");
+    protected static final MACAddress H2 = MACAddress.valueOf("00:00:00:00:00:02");
+    protected static final MACAddress H3 = MACAddress.valueOf("00:00:00:00:00:03");
     protected static final MACAddress PX = MACAddress.valueOf("00:00:00:00:00:04");
 
     protected Map<MACAddress, SwitchPort> _mac_to_switchport;
@@ -228,9 +231,27 @@ public class AdvNetRouter implements IFloodlightModule, IOFMessageListener {
 	getCommMode(MACAddress src, MACAddress dst)
     {
 	// EDIT HERE
-
-	return RouteMode.ROUTE_DIRECT;
-           
+	// H1 <--> H2 : Drop
+	if((src.equals(H1) && dst.equals(H2)) || 
+	   (src.equals(H2) && dst.equals(H1))){
+	    _log.info("pair: H1 <--> H2 : Drop");
+	    return RouteMode.ROUTE_DROP;
+	}
+	// H1 <--> H3 : Direct
+	else if((src.equals(H1) && dst.equals(H3)) || 
+		(src.equals(H3) && dst.equals(H1))){
+	    _log.info("pair: H1 <--> H3 : Direct");
+	    return RouteMode.ROUTE_DIRECT;
+	}
+	// H2 <--> H3 : Proxy
+	else if((src.equals(H2) && dst.equals(H3)) || 
+		(src.equals(H3) && dst.equals(H2))){
+	    _log.info("pair: H2 <--> H3 : Proxy");
+	    return RouteMode.ROUTE_PROXY;
+	}
+	else {
+	    return RouteMode.ROUTE_DROP;
+	}
     }
 
     private void
