@@ -278,12 +278,6 @@ public class AdvNetRouter implements IFloodlightModule, IOFMessageListener {
 	_log.debug("writing flow mod: " + fmod);
 
 	try {
-	    if(fmod == null){
-		_log.error("fmod is null!");
-	    }
-	    else{
-		_log.error("fmod is not null");
-	    }
 	    sw.write(fmod, null);
 	} catch (IOException e) {
 	    _log.error("error writing flow mod: " + e);
@@ -345,10 +339,6 @@ public class AdvNetRouter implements IFloodlightModule, IOFMessageListener {
 	fm.setCookie(AppCookie.makeCookie(100, 0));
 	fm.setCommand(OFFlowMod.OFPFC_ADD);
 	fm.setLengthU(len);
-
-	if(fm == null){
-	    _log.error("fm is null!");
-	}
 
 	return fm;
     }
